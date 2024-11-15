@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>My To-Do's</h1>
+
+    <!-- Prominent Error Message at the Top -->
+    {% if error %}
+        <div style="color: white; background-color: red; font-size: 16px; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; margin-bottom: 20px;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <!-- Instruction Message -->
+    <p style="color: #555; font-size: 14px;">
+        To save changes to the title, category, or status, make edits directly in the fields and press the <strong>Update</strong> button.
+    </p>
+
+    <!-- Add Task Form -->
+    <form action="/tasks" method="POST" style="margin-bottom: 20px;">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <input type="text" name="category" placeholder="Category" required>
+        <button type="submit" class="add-task-btn">Add Task</button>
+    </form>
+
+    <!-- Search Task by ID Form -->
+    <form id="search-task-form" action="/search_task" method="GET" style="margin-bottom: 20px;">
+        <input type="number" name="task_id" placeholder="Enter Task ID" required>
+        <button type="submit">Search Task by ID</button>
+    </form>
+
+    {% if task %}
+    <!-- Display searched task result if available -->
+    <div id="task-result" style="margin-top: 20px;">
+        <p><strong>Task ID:</strong> {{ task.id }}</p>
+        <p><strong>Title:</strong> {{ task.title }}</p>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Category:</strong> {{ task.category }}</p>
+    </div>
+    {% endif %}
+
+    {% if tasks %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>
+                    <input type="text" name="title" value="{{ task.title }}" form="update-form-{{ task.id }}">
+                </td>
+                <td>
+                    <select name="status" form="update-form-{{ task.id }}">
+                        <option value="pending" {% if task.status == "pending" %}selected{% endif %}>Pending</option>
+                        <option value="completed" {% if task.status == "completed" %}selected{% endif %}>Completed</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="category" value="{{ task.category }}" form="update-form-{{ task.id }}">
+                </td>
+                <td>
+                    <!-- Update button -->
+                    <form id="update-form-{{ task.id }}" action="/tasks/{{ task.id }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="_method" value="PUT">
+                        <button type="submit" title="Click to save your changes">Update</button>
+                    </form>
+
+                    <!-- Delete button with token field directly in form -->
+                    <form action="/tasks/{{ task.id }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="text" name="token" placeholder="Enter token to delete" required>
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No tasks found.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,77 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f9;
+}
+
+h1 {
+    color: #333;
+    font-size: 24px;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th, td {
+    padding: 12px;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Button styles */
+form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+button[type="submit"] {
+    display: inline-block;
+    margin: 0;
+}
+
+.add-task-btn {
+    background-color: #28a745;
+    margin-bottom: 15px;
+}
+
+.add-task-btn:hover {
+    background-color: #218838;
+}
+
+/* Status styles */
+.status {
+    font-weight: bold;
+    color: #555;
+}
+
+.status.completed {
+    color: #28a745;
+}
